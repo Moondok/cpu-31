@@ -7,7 +7,7 @@ module mux41 (
     output reg[31:0] pc_value
 
 );
-// this module output the PC value, select from 4 candidates:NPC Rs(j), ADD1(beq,bne),and ||(j,jal )
+// this module output the PC value, select from 4 candidates:NPC, Rs(j), ADD1(beq,bne),and ||(j,jal )
 always @(*) 
 begin
     if(select_signal==2'b00)

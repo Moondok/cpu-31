@@ -10,11 +10,10 @@ module mux31 (
 
 always @(*) 
 begin
-    
     if(select_signal==2'b00)
-        ref_wdata<=dmem_value;
-    else if(select_signal==2'b01)
         ref_wdata<=alu_value;
+    else if(select_signal==2'b01)
+        ref_wdata<=dmem_value;
     else if(select_signal==2'b10)
         ref_wdata<=add2_value;
 end

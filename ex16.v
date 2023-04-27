@@ -5,6 +5,6 @@ module ex16 (
     
 );
 // this module can support both signed extend and unsigned extend
-assign o_data=signal? { {16{in_data[15]}},in_data}:{ {16{1'b0}},in_data};
+assign o_data=signal? { {16{1'b0}},in_data}:{ {16{in_data[15]}},in_data};
 
 endmodule //ex16

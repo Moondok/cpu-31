@@ -11,9 +11,9 @@ localparam ra=5'b11111; // ra register, just for jal instruction
 always @(*) 
 begin
     if(select_signal==2'b00)
-        ref_waddr<=Rt;
-    else if(select_signal==2'b01)
         ref_waddr<=Rd;
+    else if(select_signal==2'b01)
+        ref_waddr<=Rt;
     else if(select_signal==2'b10)
         ref_waddr<=ra;
 end
