@@ -11,7 +11,9 @@ module controller (
     output [1:0] ref_wdata_signal,
     output regfile_w,
     output alu_operand1_signal,
-    output alu_operand2_signal
+    output alu_operand2_signal,
+    output d_r,
+    output d_w
 // );
 );
 
@@ -35,5 +37,9 @@ assign alu_operand1_signal=decoded_instr[10]||decoded_instr[11]||decoded_instr[1
 
 assign alu_operand2_signal=decoded_instr[17]||decoded_instr[18]||decoded_instr[19]||decoded_instr[20]||decoded_instr[21]||decoded_instr[22]
                          ||decoded_instr[23]||decoded_instr[24]||decoded_instr[27]||decoded_instr[28];
+
+assign d_r=decoded_instr[23];
+
+assign d_w=decoded_instr[24];
 
 endmodule //controller

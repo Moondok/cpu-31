@@ -22,12 +22,14 @@ module cpu (
     input rst,
     input[31:0] instr,
     input[31:0] dmem_data,
-    output[10:0] data_addr,
-    output [10:0] instr_addr,
+    output[31:0] data_addr,
+    output [31:0] instr_addr,
     output[31:0] w_data,
     output dmem_w,
     output dmem_r
 );
+
+// inner wires 
 wire  [31:0] decoded_instr;
 
 // operands and result for alu
@@ -94,6 +96,12 @@ wire [1:0] ref_wdata_signal;
 wire alu_operand1_signal;
 wire alu_operand2_signal;
 
+// signal to control dmem , get from controller
+wire d_r;
+wire d_w;
+
+
+//inner components
 
 instrument_decoder instrument_decoder_inst(.raw_instruction(instr),.code(decoded_instr));
 
@@ -115,7 +123,7 @@ alu alu_inst(.a(operand_a),.b(operand_b),.r(alu_result),.zero(zero),.carry(carry
 
 controller controller_inst(.decoded_instr(decoded_instr),.dmem_r(dmem_r),.dmem_w(dmem_w),.regfile_w(regfile_w),.alu_control(alu_control),.mux41_signal(mux41_signal),
             .mux21_1_signal(mux21_1_signal),.extend16_signal(extend16_signal),.ref_waddr_signal(ref_waddr_signal),.ref_wdata_signal(ref_wdata_signal),
-            .regfile_w(regfile_w),.alu_operand1_signal(alu_operand1_signal),.alu_operand2_signal(alu_operand2_signal));
+            .regfile_w(regfile_w),.alu_operand1_signal(alu_operand1_signal),.alu_operand2_signal(alu_operand2_signal),.d_r(d_r),.d_w(d_w));
 
 mux31 mux31_inst(.dmem_value(dmem_data),.alu_value(alu_result),.add2_value(out_add2),.select_signal(ref_wdata_signal),.ref_wdata(ref_wdata));
 
@@ -136,6 +144,18 @@ joint joint_inst(.pc_value(out_pc[31:28]),.jump_value({instr[25:0],2'b00}),.join
 add1 add1_inst(.a(out_npc),.b(r_18),.o_data(out_add1),.overflow(overflow_signal));
 
 add2 add2_inst(.pc_value(out_pc),.o_data(out_add2));
+
+
+// external connections
+assign data_addr=re; // the data addr for dmem
+
+assign w_data=Rt_value;
+
+assign instr_addr=out_pc;
+
+assign dmem_w=d_w;
+
+assign dmem_r=d_r;
 
 
 endmodule //cpu
