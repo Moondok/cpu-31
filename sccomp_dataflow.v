@@ -16,7 +16,7 @@ wire [10:0] instruction_addr;
 wire dmem_w;
 wire dmem_r;
 
-cpu sccpu(.clk(clk),.rst(rstn),.instr(instuction),.r_data(r_data),.data_addr(data_addr),.w_data(w_data)
+cpu sccpu(.clk(clk),.rst(rstn),.instr(instuction),.dmem_data(r_data),.data_addr(data_addr),.w_data(w_data)
     ,.instr_addr(instruction_addr),.dmem_r(dmem_r),.dmem_w(dmem_w));
 
 dmem dmem_inst(.dm_w(dmem_w),.dm_r(dmem_r),.dm_addr(data_addr),.dm_wdata(w_data),.dm_rdata(r_data));

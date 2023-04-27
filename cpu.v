@@ -1,14 +1,21 @@
 `include "instruction_decoder.v"
 `include "controller.v"
+`include "npc.v"
 `include "alu.v"
-`include "dmem.v"
 `include "regfile.v"
+`include "mux41.v"
 `include "mux31.v"
 `include "mux31_1.v"
 `include "mux21.v"
 `include "mux21_1.v"
 `include "ex5.v"
 `include "ex16.v"
+`include "joint.v"
+`include "add1.v"
+`include "add2.v"
+`include "add1.v"
+`include "add2.v"
+
 
 module cpu (
     input clk,
@@ -78,8 +85,18 @@ mux31_1 mux31_1_inst(.Rt(instr[20:16]),.Rd(instr[15:11]),.ref_waddr(ref_waddr),.
 
 regfile cpu_ref(.clk(clk),.rst(rst),.we(regfile_w),.waddr(ref_waddr),.wdata(ref_wdata),.raddr1(instr[25:21]),.raddr2(instr[20:16]),.rdata1(Rs_value),.rdata2(Rt_value));
 
+pcreg pcreg_inst(.clk(clk),.ena(1'b0),.rstn(rst),.data_in(),.data_out());
 
+npc npc_inst(.former_instr_addr(),.next_instr_addr());
 
+//get the input for pc
+mux41 mux_41_inst(.npc_value(),.Rs_value(),.ADD1_value(),.joint_value(),.select_signal(2'b10),.pc_value());
+
+joint joint_inst(.pc_value(),.jump_value(),.joint_addr());
+
+add1 add1_inst(.a(),.b(),.o_data(),.overflow());
+
+add2 add2_inst(.pc_value(),.o_data());
 
 
 endmodule //cpu
