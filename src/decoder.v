@@ -1,12 +1,9 @@
 module decoder(
     input[4:0] waddr,
-    input we,
     output reg [31:0] one_hot_waddr
     );
-    integer cnt=0;
     always @(*)
     begin
-        if(we)
         begin
             case (waddr)
                 5'b00000: one_hot_waddr=32'b00000000_00000000_00000000_00000001;
@@ -45,7 +42,5 @@ module decoder(
                 
             endcase
         end
-        else
-            one_hot_waddr=32'b00000000_00000000_00000000_00000000;
     end
 endmodule

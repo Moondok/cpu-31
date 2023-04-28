@@ -1,5 +1,4 @@
 `include "instruction_decoder.v"
-`include "controller.v"
 `include "npc.v"
 `include "alu.v"
 `include "regfile.v"
@@ -13,8 +12,8 @@
 `include "joint.v"
 `include "add1.v"
 `include "add2.v"
-`include "add1.v"
-`include "add2.v"
+`include "controller.v"
+`include "ext18.v"
 
 
 module cpu (
@@ -100,13 +99,15 @@ wire alu_operand2_signal;
 wire d_r;
 wire d_w;
 
+// signal from alu's zero , for the instriction beq and bne
+
 
 //inner components
 
 instrument_decoder instrument_decoder_inst(.raw_instruction(instr),.code(decoded_instr));
 
 // extend imm||00 to 32 bits
-ex18 ex18_inst(.imm({instr[15:0]||2'b00}),.o(r_18));
+ext18 ex18_inst(.imm({instr[15:0],2'b00}),.o(r_18));
 
 ex16 ex16_inst(.in_data(instr[15:0]),.o_data(r_16),.signal(extend16_signal));
 
@@ -123,13 +124,13 @@ alu alu_inst(.a(operand_a),.b(operand_b),.r(alu_result),.zero(zero),.carry(carry
 
 controller controller_inst(.decoded_instr(decoded_instr),.dmem_r(dmem_r),.dmem_w(dmem_w),.regfile_w(regfile_w),.alu_control(alu_control),.mux41_signal(mux41_signal),
             .mux21_1_signal(mux21_1_signal),.extend16_signal(extend16_signal),.ref_waddr_signal(ref_waddr_signal),.ref_wdata_signal(ref_wdata_signal),
-            .regfile_w(regfile_w),.alu_operand1_signal(alu_operand1_signal),.alu_operand2_signal(alu_operand2_signal),.d_r(d_r),.d_w(d_w));
+            .alu_operand1_signal(alu_operand1_signal),.alu_operand2_signal(alu_operand2_signal),.d_r(d_r),.d_w(d_w),.zero_signal(zero));
 
 mux31 mux31_inst(.dmem_value(dmem_data),.alu_value(alu_result),.add2_value(out_add2),.select_signal(ref_wdata_signal),.ref_wdata(ref_wdata));
 
 mux31_1 mux31_1_inst(.Rt(instr[20:16]),.Rd(instr[15:11]),.ref_waddr(ref_waddr),.select_signal(ref_waddr_signal));
 
-regfile cpu_ref(.clk(clk),.rst(rst),.we(regfile_w),.waddr(ref_waddr),.wdata(ref_wdata),.raddr1(instr[25:21]),.raddr2(instr[20:16]),.rdata1(Rs_value),.rdata2(Rt_value));
+regfile cpu_ref(.clk(clk),.rst(rst),.we(regfile_w),.waddr(ref_waddr),.wdata(ref_wdata),.raddr1(instr[25:21]),.raddr2(instr[20:16]),.rdata1(Rs_value),.rdata2(Rt_value),.is_overflow(overflow));
 
 pcreg pcreg_inst(.clk(clk),.ena(1'b0),.rstn(rst),.data_in(in_pc),.data_out(out_pc));
 
@@ -147,7 +148,7 @@ add2 add2_inst(.pc_value(out_pc),.o_data(out_add2));
 
 
 // external connections
-assign data_addr=re; // the data addr for dmem
+assign data_addr=alu_result; // the data addr for dmem
 
 assign w_data=Rt_value;
 
