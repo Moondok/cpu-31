@@ -1,20 +1,20 @@
-`include "instruction_decoder.v"
-`include "npc.v"
-`include "alu.v"
-`include "regfile.v"
-`include "mux41.v"
-`include "mux31.v"
-`include "mux31_1.v"
-`include "mux21.v"
-`include "mux21_1.v"
-`include "ex5.v"
-`include "ex16.v"
-`include "joint.v"
-`include "add1.v"
-`include "add2.v"
-`include "controller.v"
-`include "ext18.v"
-
+// `include "instruction_decoder.v"
+// `include "ext18.v"
+// `include "ex16.v"
+// `include "ex5.v"
+// `include "mux21.v"
+// `include "mux21_1.v"
+// `include "alu.v"
+// `include "controller.v"
+// `include "mux31.v"
+// `include "mux31_1.v"
+// `include "regfile.v"
+// `include "joint.v"
+// `include "npc.v"
+// `include "mux41.v"
+// `include "add1.v"
+// `include "add2.v"
+// `include "pcreg.v"
 
 module cpu (
     input clk,
@@ -50,8 +50,6 @@ wire negative;
 wire overflow;
 
 //output signal of controller
-wire dmem_r;
-wire dmem_w;
 wire regfile_w;
 wire [3:0] alu_control;
 
@@ -130,9 +128,10 @@ mux31 mux31_inst(.dmem_value(dmem_data),.alu_value(alu_result),.add2_value(out_a
 
 mux31_1 mux31_1_inst(.Rt(instr[20:16]),.Rd(instr[15:11]),.ref_waddr(ref_waddr),.select_signal(ref_waddr_signal));
 
-regfile cpu_ref(.clk(clk),.rst(rst),.we(regfile_w),.waddr(ref_waddr),.wdata(ref_wdata),.raddr1(instr[25:21]),.raddr2(instr[20:16]),.rdata1(Rs_value),.rdata2(Rt_value),.is_overflow(overflow));
+// regfile and pcreg hold different clk 
+regfile cpu_ref(.clk(~clk),.rst(rst),.we(regfile_w),.waddr(ref_waddr),.wdata(ref_wdata),.raddr1(instr[25:21]),.raddr2(instr[20:16]),.rdata1(Rs_value),.rdata2(Rt_value),.is_overflow(overflow));
 
-pcreg pcreg_inst(.clk(clk),.ena(1'b0),.rstn(rst),.data_in(in_pc),.data_out(out_pc));
+pcreg pcreg_inst(.clk(clk),.ena(1'b1),.rstn(rst),.data_in(in_pc),.data_out(out_pc));
 
 npc npc_inst(.former_instr_addr(out_pc),.next_instr_addr(out_npc));
 
