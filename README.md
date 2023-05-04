@@ -2,7 +2,7 @@
 
 ### Brief Intro
 
-This is a super-tiny toy cpu with ```Harvard-structure``` which can support 31 ```mips  ``` instructions. It is also submitted as a mid-term project for Tongji University *** CS 101016*** course.
+This is a super-tiny toy cpu with ```Harvard-structure``` which can support 31 ```mips``` instructions. It is also submitted as a mid-term project for *Tongji University* *CS 101016* course.
 
 
 
