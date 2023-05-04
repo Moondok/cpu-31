@@ -5,20 +5,20 @@ module pcreg (
     input [31:0] data_in,
     output[31:0] data_out
 );
-reg [31:0] register=0;
+reg [31:0] mem=32'h00400000;
 
-always @(posedge clk or negedge rstn) 
+always @(negedge clk or negedge rstn)
 begin
    if(ena)
    begin
     if(!rstn)
-        register<=32'h00400000;
+        mem=32'h00400000;
     else
-        register<=data_in;
+        mem=data_in;
    end
 end
 
-assign data_out=(ena&&rstn)? register:32'h00400000;
+assign data_out= (ena&&rstn)? mem:32'h00400000;
 
 
 
