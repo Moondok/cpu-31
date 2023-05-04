@@ -1,4 +1,5 @@
 module dmem (
+    input clk,
     input dm_w,
     input dm_r,
     input [10:0] dm_addr,
@@ -9,7 +10,7 @@ module dmem (
 
 reg [31:0] mem[31:0];
 assign  dm_rdata=dm_r ? mem[dm_addr]:32'bz;
-always @(*) 
+always @(posedge clk) 
 begin
     if(dm_w)
         mem[dm_addr]<=dm_wdata;
