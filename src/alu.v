@@ -81,5 +81,5 @@ assign carry=0;
 assign negative=tmp[31];
 assign zero=(tmp==0);
 assign r=tmp[31:0];
-assign overflow=((aluc==ADD)&&(a[31]==b[31])&&(a[31]!=tmp[32]))||((aluc==SUB)&&((a[31]&&!b[31]&&!tmp[32])||(!a[31]&&b[31]&&tmp[32])));
+assign overflow=((aluc==ADD)&&(a[31]==b[31])&&(a[31]!=tmp[31]))||((aluc==SUB)&&((a[31]&&!b[31]&&!tmp[32])||(!a[31]&&b[31]&&tmp[31])));
 endmodule //alu

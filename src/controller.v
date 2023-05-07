@@ -21,7 +21,7 @@ assign  mux41_signal[0]=decoded_instr[16]||decoded_instr[29]||decoded_instr[30];
 assign  mux41_signal[1]=(decoded_instr[25]&&zero_signal)||(decoded_instr[26]&&~zero_signal)||decoded_instr[29]||decoded_instr[30];
 
 assign mux21_1_signal=decoded_instr[10]||decoded_instr[11]||decoded_instr[12];
-assign extend16_signal=decoded_instr[27]||decoded_instr[28]||decoded_instr[29];
+assign extend16_signal=decoded_instr[19]||decoded_instr[20]||decoded_instr[21];
 
 assign ref_waddr_signal[0]=decoded_instr[17]||decoded_instr[18]||decoded_instr[19]||decoded_instr[20]||
         decoded_instr[21]||decoded_instr[22]||decoded_instr[23]||decoded_instr[27]||decoded_instr[28];

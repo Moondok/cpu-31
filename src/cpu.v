@@ -114,9 +114,9 @@ ex5 ex5_inst(.i_shift_num(in_5),.o_shift_num(r_5));
 // get a correct input for ex5
 mux21_1 mux21_1_inst(.imm_value(instr[10:6]),.Rs_value(instr[25:21]),.o_data(in_5),.signal(mux21_1_signal));
 
-mux21 mux21_get_operanda(.operand1(r_5),.operand2(Rt_value),.r(operand_a),.select_signal(alu_operand1_signal));
+mux21 mux21_get_operanda(.operand1(r_5),.operand2(Rs_value),.r(operand_a),.select_signal(alu_operand1_signal));
 
-mux21 mux21_get_operandb(.operand1(r_16),.operand2(Rs_value),.r(operand_b),.select_signal(alu_operand2_signal));
+mux21 mux21_get_operandb(.operand1(r_16),.operand2(Rt_value),.r(operand_b),.select_signal(alu_operand2_signal));
 
 alu alu_inst(.a(operand_a),.b(operand_b),.r(alu_result),.zero(zero),.carry(carry),.negative(negative),.overflow(overflow),.aluc(alu_control));
 
