@@ -3,6 +3,6 @@ module add2 (
     output [31:0] o_data  
 );
 // this module is to add Pc with a constant , to restore the old addr to register ra, this value will be passed to mux31
-assign o_data=pc_value+8;
+assign o_data=pc_value+4;
 
 endmodule //add2

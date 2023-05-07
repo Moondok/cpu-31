@@ -1,19 +1,22 @@
 //`include "sccomp_dataflow.v"
+`timescale 1ns / 1ps
 module cputb ;
 reg clk=1,rst=1;
 wire [31:0] inst,pc; // for debug
 integer file_open;
+integer file_open2;
 
 integer counter=0;
 
 always 
 begin
-    # 20 clk=~clk;
+    # 2 clk=~clk;
 end
 
 initial 
 begin
-    file_open=$fopen("result_me.txt","w+");
+    file_open=$fopen("result_me_jr.txt","w+");
+    file_open2=$fopen("auxliray.txt","w+");
     //$readmemh("h_1_addi.txt",uut.imem_inst.mem);
 
 end
@@ -70,9 +73,20 @@ begin
         $fdisplay(file_open, "regfile29: %h", uut.sccpu.cpu_ref.array_reg[29]);
         $fdisplay(file_open, "regfile30: %h", uut.sccpu.cpu_ref.array_reg[30]);
         $fdisplay(file_open, "regfile31: %h", uut.sccpu.cpu_ref.array_reg[31]);
+
+        $fdisplay(file_open2, "counter: %h", counter);
+        $fdisplay(file_open2, "alu op1: %h", uut.sccpu.alu_inst.a);
+        $fdisplay(file_open2, "alu op2: %h", uut.sccpu.alu_inst.b);
+        $fdisplay(file_open2, "alu out: %h", uut.sccpu.alu_inst.r);
+        $fdisplay(file_open2, "alu over signal: %h \n", uut.sccpu.alu_inst.overflow);
+
     end
     else
+    begin
+      $fclose(file_open2);
         $fclose(file_open);
+    end
+    
 
     
 end
@@ -86,7 +100,7 @@ end
 //     $finish;
 // end
 
-sccomp_dataflow uut(.clk(clk),.rstn(1'b1),.instr_addr_read(pc),.instruction(inst));
+sccomp_dataflow uut(.clk_in(clk),.reset(1'b1),.pc(pc),.inst(inst));
 
 
 

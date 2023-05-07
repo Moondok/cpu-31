@@ -8,39 +8,39 @@ This is a super-tiny toy cpu with ```Harvard-structure``` which can support 31 `
 
 ### IO relationship for each instruction
 
-| instruction |    PC     | NPC  | IMEM | DMEM addr | Dmem  data |   RegFile    | ALU op1 | ALU op2  | Ex5_32  | Ex16_32 | Ex18_32   | ADD1  op1 | ADD1 op2 | ADD2 op1 | ADD2 op2 | \|\| op1  | \|\| op2         |
-| :---------: | :-------: | :--: | :--: | --------- | ---------- | :----------: | :-----: | :------: | ------- | ------- | --------- | --------- | -------- | -------- | -------- | --------- | ---------------- |
-|     add     | NPC->MUX  |  PC  |  PC  |           |            |     ALU      |   Rs    |    Rt    |         |         |           |           |          |          |          |           |                  |
-|    addu     | NPC->MUX  |  PC  |  PC  |           |            |     ALU      |   Rs    |    Rt    |         |         |           |           |          |          |          |           |                  |
-|     sub     | NPC->MUX  |  PC  |  PC  |           |            |     ALU      |   Rs    |    Rt    |         |         |           |           |          |          |          |           |                  |
-|    subu     | NPC->MUX  |  PC  |  PC  |           |            |     ALU      |   Rs    |    Rt    |         |         |           |           |          |          |          |           |                  |
-|     and     | NPC->MUX  |  PC  |  PC  |           |            |     ALU      |   Rs    |    Rt    |         |         |           |           |          |          |          |           |                  |
-|     or      | NPC->MUX  |  PC  |  PC  |           |            |     ALU      |   Rs    |    Rt    |         |         |           |           |          |          |          |           |                  |
-|     xor     | NPC->MUX  |  PC  |  PC  |           |            |     ALU      |   Rs    |    Rt    |         |         |           |           |          |          |          |           |                  |
-|     nor     | NPC->MUX  |  PC  |  PC  |           |            |     ALU      |   Rs    |    Rt    |         |         |           |           |          |          |          |           |                  |
-|     slt     | NPC->MUX  |  PC  |  PC  |           |            |   ALU->MUX   |   Rs    |    Rt    |         |         |           |           |          |          |          |           |                  |
-|    sltu     | NPC->MUX  |  PC  |  PC  |           |            |   ALU->MUX   |   Rs    |    Rt    |         |         |           |           |          |          |          |           |                  |
-|     sll     | NPC->MUX  |  PC  |  PC  |           |            |     ALU      | Ex5_32  |    Rt    | sa      |         |           |           |          |          |          |           |                  |
-|     srl     | NPC->MUX  |  PC  |  PC  |           |            |     ALU      | Ex5_32  |    Rt    | sa      |         |           |           |          |          |          |           |                  |
-|     sra     | NPC->MUX  |  PC  |  PC  |           |            |     ALU      | Ex5_32  |    Rt    | sa      |         |           |           |          |          |          |           |                  |
-|    sllv     | NPC->MUX  |  PC  |  PC  |           |            |     ALU      | Ex5_32  |    Rt    | Rs[4:0] |         |           |           |          |          |          |           |                  |
-|    srlv     | NPC->MUX  |  PC  |  PC  |           |            |     ALU      | Ex5_32  |    Rt    | Rs[4:0] |         |           |           |          |          |          |           |                  |
-|    srav     | NPC->MUX  |  PC  |  PC  |           |            |     ALU      | Ex5_32  |    Rt    | Rs[4:0] |         |           |           |          |          |          |           |                  |
-|     jr      |  Rs->MUX  |  PC  |  PC  |           |            |              |         |          |         |         |           |           |          |          |          |           |                  |
-|    addi     | NPC->MUX  |  PC  |  PC  |           |            |   ALU->Rt    |   Rs    | Ext16_32 |         | imm     |           |           |          |          |          |           |                  |
-|    addiu    | NPC->MUX  |  PC  |  PC  |           |            |   ALU->Rt    |   Rs    | Ext16_32 |         | imm     |           |           |          |          |          |           |                  |
-|    andi     | NPC->MUX  |  PC  |  PC  |           |            |   ALU->Rt    |   Rs    | Ext16_32 |         | imm     |           |           |          |          |          |           |                  |
-|     ori     | NPC->MUX  |  PC  |  PC  |           |            |   ALU->Rt    |   Rs    | Ext16_32 |         | imm     |           |           |          |          |          |           |                  |
-|    xori     | NPC->MUX  |  PC  |  PC  |           |            |   ALU->Rt    |   Rs    | Ext16_32 |         | imm     |           |           |          |          |          |           |                  |
-|     lui     | NPC->MUX  |  PC  |  PC  |           |            |   ALU->Rt    |   Rs    | Ext16_32 |         | imm     |           |           |          |          |          |           |                  |
-|     lw      | NPC->MUX  |  PC  |  PC  | ALU       |            |   dmem->Rt   |   Rs    | Ext16_32 |         | imm     |           |           |          |          |          |           |                  |
-|     sw      | NPC->MUX  |  PC  |  PC  | ALU       | Rt         |              |   Rs    | Ext16_32 |         | imm     |           |           |          |          |          |           |                  |
-|     beq     | ADD1->MUX |  PC  |  PC  |           |            |              |   Rs    |    Rt    |         |         | imm\|\|00 | NPC       | Ex18_32  |          |          |           |                  |
-|     bne     | ADD1->MUX |  PC  |  PC  |           |            |              |   Rs    |    Rt    |         |         | imm\|\|00 | NPC       | Ex18_32  |          |          |           |                  |
-|    slti     | NPC->MUX  |  PC  |  PC  |           |            | ALU->MUX->Rt |   Rs    | Ext16_32 |         | imm     |           |           |          |          |          |           |                  |
-|    sltiu    | NPC->MUX  |  PC  |  PC  |           |            | ALU->MUX->Rt |   Rs    | Ext16_32 |         | imm     |           |           |          |          |          |           |                  |
-|      j      | \|\|->MUX |  PC  |  PC  |           |            |              |         |          |         |         |           |           |          |          |          | PC[31:28] | IMEM[25:0]\|\|02 |
-|     jal     | \|\|->MUX |  PC  |  PC  |           |            |  ADD2->$31   |         |          |         |         |           |           |          | PC       | 8        | PC[31:28] | IMEM[25:0]\|\|02 |
+| instruction |    PC     | NPC  | IMEM | DMEM addr | Dmem  data |   RegFile    | ALU op1 | ALU op2  | Ex5_32 | Ex16_32 | Ex18_32   | ADD1  op1 | ADD1 op2 | ADD2 op1 | ADD2 op2 | \|\| op1  | \|\| op2         |
+| :---------: | :-------: | :--: | :--: | --------- | ---------- | :----------: | :-----: | :------: | ------ | ------- | --------- | --------- | -------- | -------- | -------- | --------- | ---------------- |
+|     add     | NPC->MUX  |  PC  |  PC  |           |            |     ALU      |   Rs    |    Rt    |        |         |           |           |          |          |          |           |                  |
+|    addu     | NPC->MUX  |  PC  |  PC  |           |            |     ALU      |   Rs    |    Rt    |        |         |           |           |          |          |          |           |                  |
+|     sub     | NPC->MUX  |  PC  |  PC  |           |            |     ALU      |   Rs    |    Rt    |        |         |           |           |          |          |          |           |                  |
+|    subu     | NPC->MUX  |  PC  |  PC  |           |            |     ALU      |   Rs    |    Rt    |        |         |           |           |          |          |          |           |                  |
+|     and     | NPC->MUX  |  PC  |  PC  |           |            |     ALU      |   Rs    |    Rt    |        |         |           |           |          |          |          |           |                  |
+|     or      | NPC->MUX  |  PC  |  PC  |           |            |     ALU      |   Rs    |    Rt    |        |         |           |           |          |          |          |           |                  |
+|     xor     | NPC->MUX  |  PC  |  PC  |           |            |     ALU      |   Rs    |    Rt    |        |         |           |           |          |          |          |           |                  |
+|     nor     | NPC->MUX  |  PC  |  PC  |           |            |     ALU      |   Rs    |    Rt    |        |         |           |           |          |          |          |           |                  |
+|     slt     | NPC->MUX  |  PC  |  PC  |           |            |   ALU->MUX   |   Rs    |    Rt    |        |         |           |           |          |          |          |           |                  |
+|    sltu     | NPC->MUX  |  PC  |  PC  |           |            |   ALU->MUX   |   Rs    |    Rt    |        |         |           |           |          |          |          |           |                  |
+|     sll     | NPC->MUX  |  PC  |  PC  |           |            |     ALU      | Ex5_32  |    Rt    | sa     |         |           |           |          |          |          |           |                  |
+|     srl     | NPC->MUX  |  PC  |  PC  |           |            |     ALU      | Ex5_32  |    Rt    | sa     |         |           |           |          |          |          |           |                  |
+|     sra     | NPC->MUX  |  PC  |  PC  |           |            |     ALU      | Ex5_32  |    Rt    | sa     |         |           |           |          |          |          |           |                  |
+|    sllv     | NPC->MUX  |  PC  |  PC  |           |            |     ALU      |   Rs    |    Rt    |        |         |           |           |          |          |          |           |                  |
+|    srlv     | NPC->MUX  |  PC  |  PC  |           |            |     ALU      |   Rs    |    Rt    |        |         |           |           |          |          |          |           |                  |
+|    srav     | NPC->MUX  |  PC  |  PC  |           |            |     ALU      |   Rs    |    Rt    |        |         |           |           |          |          |          |           |                  |
+|     jr      |  Rs->MUX  |  PC  |  PC  |           |            |              |         |          |        |         |           |           |          |          |          |           |                  |
+|    addi     | NPC->MUX  |  PC  |  PC  |           |            |   ALU->Rt    |   Rs    | Ext16_32 |        | imm     |           |           |          |          |          |           |                  |
+|    addiu    | NPC->MUX  |  PC  |  PC  |           |            |   ALU->Rt    |   Rs    | Ext16_32 |        | imm     |           |           |          |          |          |           |                  |
+|    andi     | NPC->MUX  |  PC  |  PC  |           |            |   ALU->Rt    |   Rs    | Ext16_32 |        | imm     |           |           |          |          |          |           |                  |
+|     ori     | NPC->MUX  |  PC  |  PC  |           |            |   ALU->Rt    |   Rs    | Ext16_32 |        | imm     |           |           |          |          |          |           |                  |
+|    xori     | NPC->MUX  |  PC  |  PC  |           |            |   ALU->Rt    |   Rs    | Ext16_32 |        | imm     |           |           |          |          |          |           |                  |
+|     lui     | NPC->MUX  |  PC  |  PC  |           |            |   ALU->Rt    |   Rs    | Ext16_32 |        | imm     |           |           |          |          |          |           |                  |
+|     lw      | NPC->MUX  |  PC  |  PC  | ALU       |            |   dmem->Rt   |   Rs    | Ext16_32 |        | imm     |           |           |          |          |          |           |                  |
+|     sw      | NPC->MUX  |  PC  |  PC  | ALU       | Rt         |              |   Rs    | Ext16_32 |        | imm     |           |           |          |          |          |           |                  |
+|     beq     | ADD1->MUX |  PC  |  PC  |           |            |              |   Rs    |    Rt    |        |         | imm\|\|00 | NPC       | Ex18_32  |          |          |           |                  |
+|     bne     | ADD1->MUX |  PC  |  PC  |           |            |              |   Rs    |    Rt    |        |         | imm\|\|00 | NPC       | Ex18_32  |          |          |           |                  |
+|    slti     | NPC->MUX  |  PC  |  PC  |           |            | ALU->MUX->Rt |   Rs    | Ext16_32 |        | imm     |           |           |          |          |          |           |                  |
+|    sltiu    | NPC->MUX  |  PC  |  PC  |           |            | ALU->MUX->Rt |   Rs    | Ext16_32 |        | imm     |           |           |          |          |          |           |                  |
+|      j      | \|\|->MUX |  PC  |  PC  |           |            |              |         |          |        |         |           |           |          |          |          | PC[31:28] | IMEM[25:0]\|\|02 |
+|     jal     | \|\|->MUX |  PC  |  PC  |           |            |  ADD2->$31   |         |          |        |         |           |           |          | PC       | 8        | PC[31:28] | IMEM[25:0]\|\|02 |
 
 + some comments
   - ```slt```: we execute ```sub```  instruction in ALU, then use an ```mux``` to get the right answer for Rd , same for  ```sltu```.
