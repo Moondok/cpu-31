@@ -1,10 +1,8 @@
 //`include "sccomp_dataflow.v"
-`timescale 1ns / 1ps
 module cputb ;
-reg clk=1,rst=1;
+reg clk=0,rst=1;
 wire [31:0] inst,pc; // for debug
 integer file_open;
-integer file_open2;
 
 integer counter=0;
 
@@ -13,34 +11,28 @@ begin
     # 2 clk=~clk;
 end
 
+
 initial 
 begin
-    file_open=$fopen("result_me_jr.txt","w+");
-    file_open2=$fopen("auxliray.txt","w+");
-    //$readmemh("h_1_addi.txt",uut.imem_inst.mem);
-
+    # 2 rst=0;
 end
 
-always @(negedge clk) 
+
+initial 
 begin
+    file_open=$fopen("result_me.txt","w+");
+end
+
+always 
+begin
+    #2;
+    if (clk==1'b1)
+    begin
     counter<=counter+1;
     if (counter<=8'h99-1&&counter>=1'b0)
     begin
-       // $fdisplay(file_output,"check memory: %h",uut.imem_inst.mem[0]);
         $fdisplay(file_open,"pc: %h",uut.instr_addr_read);
         $fdisplay(file_open, "instr: %h", uut.instruction);
-        // $fdisplay(file_output,"cpu pc in: %h",uut.sccpu.pcreg_inst.data_in);
-        // $fdisplay(file_output,"cpu pc out: %h",uut.sccpu.pcreg_inst.data_out);
-        // $fdisplay(file_output,"npc in: %h",uut.sccpu.npc_inst.former_instr_addr);
-        // $fdisplay(file_output,"npc out: %h",uut.sccpu.npc_inst.next_instr_addr);
-        // $fdisplay(file_output,"mux41: %h",uut.sccpu.mux_41_inst.pc_value);
-        // $fdisplay(file_output,"mux41 in: %h",uut.sccpu.mux_41_inst.npc_value);
-        // $fdisplay(file_output,"mux41_signal: %h",uut.sccpu.mux_41_inst.select_signal);
-        // $fdisplay(file_output,"controller input str: %h",uut.sccpu.controller_inst.decoded_instr);
-        // $fdisplay(file_output,"controller input str: %h",uut.sccpu.decoded_instr);
-        // $fdisplay(file_output,"decoded instr: %h",uut.sccpu.instrument_decoder_inst.code);
-        // $fdisplay(file_output,"decoded raw instr: %h",uut.sccpu.instr);
-        // $fdisplay(file_output,"decoded raw instr: %h",uut.sccpu.instrument_decoder_inst.raw_instruction);
         $fdisplay(file_open, "regfile0: %h", uut.sccpu.cpu_ref.array_reg[0]);
         $fdisplay(file_open, "regfile1: %h", uut.sccpu.cpu_ref.array_reg[1]);
         $fdisplay(file_open, "regfile2: %h", uut.sccpu.cpu_ref.array_reg[2]);
@@ -74,17 +66,13 @@ begin
         $fdisplay(file_open, "regfile30: %h", uut.sccpu.cpu_ref.array_reg[30]);
         $fdisplay(file_open, "regfile31: %h", uut.sccpu.cpu_ref.array_reg[31]);
 
-        $fdisplay(file_open2, "counter: %h", counter);
-        $fdisplay(file_open2, "alu op1: %h", uut.sccpu.alu_inst.a);
-        $fdisplay(file_open2, "alu op2: %h", uut.sccpu.alu_inst.b);
-        $fdisplay(file_open2, "alu out: %h", uut.sccpu.alu_inst.r);
-        $fdisplay(file_open2, "alu over signal: %h \n", uut.sccpu.alu_inst.overflow);
+        
 
     end
     else
     begin
-      $fclose(file_open2);
         $fclose(file_open);
+    end
     end
     
 
@@ -96,11 +84,11 @@ end
 //     $dumpfile("cpu.vcd");
 //     $dumpvars;
 
-//     #2000;
+//     #200;
 //     $finish;
 // end
 
-sccomp_dataflow uut(.clk_in(clk),.reset(1'b1),.pc(pc),.inst(inst));
+sccomp_dataflow uut(.clk_in(clk),.reset(rst),.pc(pc),.inst(inst));
 
 
 

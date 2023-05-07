@@ -7,18 +7,18 @@ module pcreg (
 );
 reg [31:0] mem=32'h00400000;
 
-always @(negedge clk or negedge rstn)
+always @(negedge clk or posedge rstn)
 begin
    if(ena)
    begin
-    if(!rstn)
+    if(rstn)
         mem=32'h00400000;
     else
         mem=data_in;
    end
 end
 
-assign data_out= (ena&&rstn)? mem:32'h00400000;
+assign data_out= (ena&&!rstn)? mem:32'h00400000;
 
 
 

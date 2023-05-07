@@ -14,9 +14,9 @@ module regfile (
 wire [31:0] decode_result;
 reg [31:0] array_reg[31:0];
 
-assign rdata1=rst?array_reg[raddr1]:0;
+assign rdata1=rst?0:array_reg[raddr1];
 
-assign rdata2=rst?array_reg[raddr2]:0;
+assign rdata2=rst?0:array_reg[raddr2];
 
 
 initial
@@ -55,10 +55,9 @@ begin
     array_reg[31]<=0;
 end
 
-always @(negedge clk or negedge rst) 
+
+always @(posedge rst) 
 begin
-    if(rst==1'b0)
-        begin
           array_reg[0]<=0;
           array_reg[1]<=0;
           array_reg[2]<=0;
@@ -91,8 +90,10 @@ begin
           array_reg[29]<=0;
           array_reg[30]<=0;
           array_reg[31]<=0;
-        end
-    else
+end
+
+always @(negedge clk) 
+begin
     begin
       if(we&&!is_overflow&&waddr)
         array_reg[waddr]<=wdata; //reg $zero can not be write in

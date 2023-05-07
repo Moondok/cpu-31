@@ -2,7 +2,6 @@
 // `include "ext18.v"
 // `include "ex16.v"
 // `include "ex5.v"
-// `include "mux21.v"
 // `include "mux21_1.v"
 // `include "alu.v"
 // `include "controller.v"
@@ -114,9 +113,9 @@ ex5 ex5_inst(.i_shift_num(in_5),.o_shift_num(r_5));
 // get a correct input for ex5
 mux21_1 mux21_1_inst(.imm_value(instr[10:6]),.Rs_value(instr[25:21]),.o_data(in_5),.signal(mux21_1_signal));
 
-mux21 mux21_get_operanda(.operand1(r_5),.operand2(Rs_value),.r(operand_a),.select_signal(alu_operand1_signal));
+assign operand_a=alu_operand1_signal?r_5:Rs_value;
 
-mux21 mux21_get_operandb(.operand1(r_16),.operand2(Rt_value),.r(operand_b),.select_signal(alu_operand2_signal));
+assign operand_b=alu_operand2_signal?r_16:Rt_value;
 
 alu alu_inst(.a(operand_a),.b(operand_b),.r(alu_result),.zero(zero),.carry(carry),.negative(negative),.overflow(overflow),.aluc(alu_control));
 
@@ -129,9 +128,9 @@ mux31 mux31_inst(.dmem_value(dmem_data),.alu_value(alu_result),.add2_value(out_a
 mux31_1 mux31_1_inst(.Rt(instr[20:16]),.Rd(instr[15:11]),.ref_waddr(ref_waddr),.select_signal(ref_waddr_signal));
 
 // regfile and pcreg hold different clk 
-regfile cpu_ref(.clk(~clk),.rst(rst),.we(regfile_w),.waddr(ref_waddr),.wdata(ref_wdata),.raddr1(instr[25:21]),.raddr2(instr[20:16]),.rdata1(Rs_value),.rdata2(Rt_value),.is_overflow(overflow));
+regfile cpu_ref(.clk(clk),.rst(rst),.we(regfile_w),.waddr(ref_waddr),.wdata(ref_wdata),.raddr1(instr[25:21]),.raddr2(instr[20:16]),.rdata1(Rs_value),.rdata2(Rt_value),.is_overflow(overflow));
 
-pcreg pcreg_inst(.clk(clk),.ena(1'b1),.rstn(rst),.data_in(in_pc),.data_out(out_pc));
+pcreg pcreg_inst(.clk(~clk),.ena(1'b1),.rstn(rst),.data_in(in_pc),.data_out(out_pc));
 
 npc npc_inst(.former_instr_addr(out_pc),.next_instr_addr(out_npc));
 
