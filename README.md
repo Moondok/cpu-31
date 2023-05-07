@@ -54,8 +54,14 @@ This is a super-tiny toy cpu with ```Harvard-structure``` which can support 31 `
   - ```slti``` : we perform ```sub``` in ```ALU```, then use a ```mux``` to get the correct value for ```Rt```. 
   
   - ```jal``` : the address restored in ```$31``` depends on the specific standard of ```Mips``` .
+
+
+
+### Timeline
+
+- 2023-5-7 21:20  :  **Functional simulation** passes!
+
   
-    
 
 ### how to change a ```vivado``` project into lovely ```VScode```
 
@@ -78,6 +84,5 @@ This is a super-tiny toy cpu with ```Harvard-structure``` which can support 31 `
   ```
 
   
-
 
 
