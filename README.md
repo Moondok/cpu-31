@@ -1,12 +1,12 @@
 ## A Harvard-structure CPU which supports 31 Mips instructions
 
-### Brief Intro
+## Brief Intro
 
 This is a super-tiny toy cpu with ```Harvard-structure``` which can support 31 ```mips``` instructions. It is also submitted as a mid-term project for *Tongji University* *CS 101016* course.
 
 
 
-### IO relationship for each instruction
+## IO relationship for each instruction
 
 | instruction |    PC     | NPC  | IMEM | DMEM addr | Dmem  data |   RegFile    | ALU op1 | ALU op2  | Ex5_32 | Ex16_32 | Ex18_32   | ADD1  op1 | ADD1 op2 | ADD2 op1 | ADD2 op2 | \|\| op1  | \|\| op2         |
 | :---------: | :-------: | :--: | :--: | --------- | ---------- | :----------: | :-----: | :------: | ------ | ------- | --------- | --------- | -------- | -------- | -------- | --------- | ---------------- |
@@ -57,17 +57,21 @@ This is a super-tiny toy cpu with ```Harvard-structure``` which can support 31 `
 
 
 
-### Timeline
+
+
+## milestone
 
 - 2023-5-7 21:20  :  **Functional simulation** passes!
 
-  
 
-### how to change a ```vivado``` project into lovely ```VScode```
+
+
+
+## how to change a ```vivado``` project into lovely ```VScode```
 
 + substitute ```IP core``` with our hand-written ```imem_module.v```
 
-+ delete the head lines starting with ````include``` for ```vivado``` will build hierarchy automatically. 
++ delete the head lines starting with ```include``` for ```vivado``` will build hierarchy automatically. 
 
 + mend ```cputb.v``` ,delete following lines:
 
@@ -82,5 +86,4 @@ This is a super-tiny toy cpu with ```Harvard-structure``` which can support 31 `
   
   ```
   
-
 
