@@ -67,7 +67,7 @@ This is a super-tiny toy cpu with ```Harvard-structure``` which can support 31 `
 
 + substitute ```IP core``` with our hand-written ```imem_module.v```
 
-+ delete the head lines starting with ```#include``` for ```vivado``` will build hierarchy automatically. 
++ delete the head lines starting with ````include``` for ```vivado``` will build hierarchy automatically. 
 
 + mend ```cputb.v``` ,delete following lines:
 
@@ -76,13 +76,11 @@ This is a super-tiny toy cpu with ```Harvard-structure``` which can support 31 `
   begin
       $dumpfile("cpu.vcd");
       $dumpvars;
-  
       #2000;
       $finish;
   end
   
   ```
-
   
 
 
