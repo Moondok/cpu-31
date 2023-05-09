@@ -4,9 +4,10 @@
 
 module sccomp_dataflow (
     input clk_in, //posedge write regfile or dmem, negedge write pc
-    input reset, //1: reset   0: doing nothing
-    output [31:0]pc,
-    output [31:0]inst
+    input reset //1: reset   0: doing nothing
+    // // 
+    // output [7:0] o_seg,
+    // output [7:0] o_sel
     
 );
 
@@ -33,14 +34,22 @@ assign instruction_addr=(instr_addr_read-32'h00400000)/4;
 wire dmem_w;
 wire dmem_r;
 
-cpu sccpu(.clk(~clk_in),.rst(reset),.instr(instruction),.dmem_data(r_data),.data_addr(data_addr_read),.w_data(w_data),
+cpu sccpu(.clk(~clk_in_),.rst(reset),.instr(instruction),.dmem_data(r_data),.data_addr(data_addr_read),.w_data(w_data),
     .instr_addr(instr_addr_read),.dmem_r(dmem_r),.dmem_w(dmem_w));
 
-dmem dmem_inst(.clk(~clk_in),.dm_w(dmem_w),.dm_r(dmem_r),.dm_addr(data_addr),.dm_wdata(w_data),.dm_rdata(r_data));
+dmem dmem_inst(.clk(~clk_in_),.dm_w(dmem_w),.dm_r(dmem_r),.dm_addr(data_addr),.dm_wdata(w_data),.dm_rdata(r_data));
 
 imem imem_inst(.a(instruction_addr),.spo(instruction));
 
-assign pc=instr_addr_read;
-assign inst=instruction;
+// assign pc=instr_addr_read;
+// assign inst=instruction;
+
+//for board
+divider divider_inst(.I_CLK(clk_in),.rst(1'b0),.O_CLK(clk_in_));
+
+//seg7x16 seg7x16_inst(.clk(clk_in_),.reset(reset),.cs(1'b1),.i_data(instruction),.o_seg(o_seg),.o_sel(o_sel));
+
+
+
 
 endmodule //sccomp_dataflow
