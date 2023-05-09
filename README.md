@@ -93,7 +93,7 @@ This is a super-tiny toy CPU with ```Harvard-structure``` which can support 31 `
 
 ## Acknowledgement
 
-Special thanks for this [blog]([从 100 开始的 Mars Vivado CPU31 小实验 | 遐想的空中宫殿 (skyleaworlder.github.io)](https://skyleaworlder.github.io/2020/06/18/CPU31/)), it was very helpful for this project .
+Special thanks for this [blog](https://skyleaworlder.github.io/2020/06/18/CPU31/), it was very helpful for this project .
 
 
 
