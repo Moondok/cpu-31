@@ -18,5 +18,6 @@ cpu31/cpu31.srcs/sim_1/
 *.txt
 *.vhd
 *.xdc
+!timing_report.txt
 debug_coe/
 standards4coes/

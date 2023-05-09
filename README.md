@@ -2,7 +2,21 @@
 
 ## Brief Intro
 
-This is a super-tiny toy cpu with ```Harvard-structure``` which can support 31 ```mips``` instructions. It is also submitted as a mid-term project for *Tongji University* *CS 101016* course.
+This is a super-tiny toy CPU with ```Harvard-structure``` which can support 31 ```Mips``` instructions. All instructions are executed within one period thus ```pipeline technique``` is **not** utilized. It is also submitted as a mid-term project for *Tongji University* *CS 101016* course. 
+
+
+
+## Platforms and devices
+
++ ```Visual Studio Code``` with ```iverilog``` and ```gtkwave```
++ ```vivado 2016.2```
++ DIGILENT Nexys4 DDR™ FPGA Board
+
+
+
+## RTL schemantic
+
+![](schematic.jpg)
 
 
 
@@ -42,32 +56,22 @@ This is a super-tiny toy cpu with ```Harvard-structure``` which can support 31 `
 |      j      | \|\|->MUX |  PC  |  PC  |           |            |              |         |          |        |         |           |           |          |          |          | PC[31:28] | IMEM[25:0]\|\|02 |
 |     jal     | \|\|->MUX |  PC  |  PC  |           |            |  ADD2->$31   |         |          |        |         |           |           |          | PC       | 8        | PC[31:28] | IMEM[25:0]\|\|02 |
 
-+ some comments
-  - ```slt```: we execute ```sub```  instruction in ALU, then use an ```mux``` to get the right answer for Rd , same for  ```sltu```.
-  
++ additional notes
+  - ```slt```: we directly compute the result in ```ALU```.
   - ```sllv``` : though the value we get from ```Rs``` is already 32 bit , we want to restrain it to 0-31, so we pass the lowest 5 bits to ```Ext5-16```.
-  
   - ```lui``` : we do not use ```Rs``` register here, just for the consistency with other instructions.
-  
   - ```Ext16_32``` : this component can perform both zero-extend and signed-extend.
-  
-  - ```slti``` : we perform ```sub``` in ```ALU```, then use a ```mux``` to get the correct value for ```Rt```. 
-  
   - ```jal``` : the address restored in ```$31``` depends on the specific standard of ```Mips``` .
 
+## Milestones
+
+- 2023-5-7 21:20  :  **Functional simulation** passes.
+- 2023-5-9 16:20  :  **post-synthesis simulation** passes.
+- 2023-5-9 16:23  :  generate bit stream to **FPGA board** successfully. 
 
 
 
-
-## milestone
-
-- 2023-5-7 21:20  :  **Functional simulation** passes!
-
-
-
-
-
-## how to change a ```vivado``` project into lovely ```VScode```
+## How to change a ```vivado``` project into lovely ```VScode```
 
 + substitute ```IP core``` with our hand-written ```imem_module.v```
 
@@ -87,3 +91,12 @@ This is a super-tiny toy cpu with ```Harvard-structure``` which can support 31 `
   ```
   
 
+## Acknowledgement
+
+Special thanks for this [blog]([从 100 开始的 Mars Vivado CPU31 小实验 | 遐想的空中宫殿 (skyleaworlder.github.io)](https://skyleaworlder.github.io/2020/06/18/CPU31/)), it was very helpful for this project .
+
+
+
+## Contact me
+
+I have attached the ```timing report```, if you have a good way to optimize the datapath and would like to share it, please feel free to contact me.
