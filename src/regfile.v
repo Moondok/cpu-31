@@ -56,9 +56,11 @@ begin
 end
 
 
-always @(posedge rst) 
+always @(negedge clk or posedge rst) 
 begin
-          array_reg[0]<=0;
+    if(rst)
+    begin
+      array_reg[0]<=0;
           array_reg[1]<=0;
           array_reg[2]<=0;
           array_reg[3]<=0;
@@ -90,13 +92,11 @@ begin
           array_reg[29]<=0;
           array_reg[30]<=0;
           array_reg[31]<=0;
-end
-
-always @(negedge clk) 
-begin
-    begin
-      if(we&&!is_overflow&&waddr)
-        array_reg[waddr]<=wdata; //reg $zero can not be write in
+    end
+    else
+        begin
+        if(we&&!is_overflow&&waddr)
+            array_reg[waddr]<=wdata; //reg $zero can not be write in
     end
 end
 
