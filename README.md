@@ -12,7 +12,11 @@ This is a super-tiny toy CPU with ```Harvard-structure``` which can support 31 `
 + ```vivado 2016.2```
 + DIGILENT Nexys4 DDR™ FPGA Board
 
+​	
 
+## Holistic design
+
+![holistic_design](design.png)
 
 ## RTL schemantic
 
